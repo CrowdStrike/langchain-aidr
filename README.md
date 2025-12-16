@@ -1,7 +1,7 @@
-# langchain-pangea
+# langchain-aidr
 
-Pangea's tools for LangChain provide AI security features to protect your
-applications and data. Using these tools you can:
+CrowdStrike AIDR's tools for LangChain provide AI security features to protect
+your applications and data. Using these tools you can:
 
 - Defend against prompt injection attacks.
 - Prevent the exposure of sensitive information, including:
@@ -19,27 +19,25 @@ applications and data. Using these tools you can:
 ## Installation
 
 ```
-pip install -U langchain-pangea
+pip install -U langchain-aidr
 ```
 
 ## Tools
 
-One can run Pangea tools using agents or invoke them as a Runnable within
-chains.
+One can run CrowdStrike AIDR tools using agents or invoke them as a `Runnable`
+within chains.
 
 ### AI Guard
 
 ```python
 import os
 
-from langchain_pangea import PangeaAIGuard
-from pangea import PangeaConfig
+from langchain_aidr import CrowdStrikeAIGuard
 from pydantic import SecretStr
 
-pangea_ai_guard_token = SecretStr(os.getenv("PANGEA_AI_GUARD_TOKEN"))
-pangea_ai_guard_tool = PangeaAIGuard(
-    token=pangea_ai_guard_token, config=PangeaConfig(), recipe="pangea_llm_response_guard"
-)
+aidr_token = SecretStr(os.getenv("CS_AIDR_TOKEN"))
+aidr_base_url_template = SecretStr(os.getenv("CS_AIDR_BASE_URL_TEMPLATE"))
+aidr_ai_guard_tool = CrowdStrikeAIGuard(token=aidr_token, base_url_template=aidr_base_url_template)
 ```
 
 #### Agent
@@ -61,7 +59,7 @@ def search_tool(data):
     52.89.173.88
     """
 
-tools = [search_tool, pangea_ai_guard_tool]
+tools = [search_tool, aidr_ai_guard_tool]
 
 query = """
 Hi, I am Bond, James Bond. I monitor IPs found in MI6 network traffic.
@@ -96,7 +94,7 @@ Address: Universal Exports, 85 Albert Embankment, London, United Kingdom
 
 chain = (
   prompt
-  | pangea_ai_guard_tool
+  | aidr_ai_guard_tool
   | model
   | StrOutputParser()
 )
@@ -105,6 +103,6 @@ chain = (
 #### Standalone
 
 ```python
-pangea_ai_guard_tool.run("Spam me at example@example.com")
-pangea_ai_guard_tool.invoke("Take my SSN: 234-56-7890")
+aidr_ai_guard_tool.run("Spam me at example@example.com")
+aidr_ai_guard_tool.invoke("Take my SSN: 234-56-7890")
 ```
