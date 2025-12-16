@@ -11,30 +11,21 @@ if TYPE_CHECKING:
     from langchain_core.runnables.config import RunnableConfig
 
 
-class _PangeaBaseToolInput(BaseModel):
+class _CrowdStrikeBaseToolInput(BaseModel):
     input_data: str | dict | ToolCall | list[BaseMessage]
 
 
-class PangeaBaseTool(BaseTool):
+class CrowdStrikeBaseTool(BaseTool):
     """
-    Base class for Pangea tools with support for handling multiple input types,
-    enabling their seamless integration and transparent use in chains.
-    To extend this class, implement the `_process_text` method to define specific text processing logic.
-    Example:
-        Here's an example implementation in a derived tool:
-        .. code-block:: python
-            from langchain_community.tools.pangea.base_tool import PangeaBaseTool
-            class PangeaAIGuard(PangeaBaseTool):
-                def _process_text(self, input_text: str) -> str:
-                    # Example implementation of text processing
-                    guarded = self._client.guard_text(input_text, recipe="pangea_prompt_guard")
-                    if not guarded.result:
-                        raise RuntimeError("Invalid or missing result")
-                    return guarded.result.prompt_text
-        For the full implementation, see Pangea tools in ``libs/community/langchain_community/tools/pangea``.
+    Base class for CrowdStrike AIDR tools with support for handling multiple
+    input types, enabling their seamless integration and transparent use in
+    chains.
+
+    To extend this class, implement the `_process_text` method to define
+    specific text processing logic.
     """
 
-    args_schema: ArgsSchema = _PangeaBaseToolInput
+    args_schema: ArgsSchema = _CrowdStrikeBaseToolInput
 
     def invoke(
         self,
