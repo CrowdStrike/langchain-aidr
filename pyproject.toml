@@ -1,6 +1,6 @@
 [project]
 name = "langchain-aidr"
-version = "0.0.0"
+version = "0.1.0"
 description = "LangChain integrations for CrowdStrike AIDR"
 readme = "README.md"
 license = "MIT"
