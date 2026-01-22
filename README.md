@@ -32,11 +32,12 @@ within chains.
 ```python
 import os
 
-from langchain_aidr import CrowdStrikeAIGuard
 from pydantic import SecretStr
 
+from langchain_aidr import CrowdStrikeAIGuard
+
 aidr_token = SecretStr(os.getenv("CS_AIDR_TOKEN"))
-aidr_base_url_template = SecretStr(os.getenv("CS_AIDR_BASE_URL_TEMPLATE"))
+aidr_base_url_template = os.getenv("CS_AIDR_BASE_URL_TEMPLATE")
 aidr_ai_guard_tool = CrowdStrikeAIGuard(token=aidr_token, base_url_template=aidr_base_url_template)
 ```
 
