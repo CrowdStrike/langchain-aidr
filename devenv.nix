@@ -11,7 +11,7 @@
   starship.enable = true;
   languages.python = {
     enable = true;
-    version = "3.13";
+    version = "3.13.17";
     uv = {
       enable = true;
       sync = {
