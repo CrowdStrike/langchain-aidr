@@ -5,6 +5,7 @@ import os
 from crowdstrike_aidr import AIGuard
 from pydantic import SecretStr
 
+from langchain_aidr._utils import guarded_content
 from langchain_aidr.tools.base import CrowdStrikeBaseTool
 
 
@@ -65,10 +66,4 @@ class CrowdStrikeAIGuard(CrowdStrikeBaseTool):
         if not guarded.result:
             raise CrowdStrikeAIGuardError("Result is invalid or missing")
 
-        if guarded.result.guard_output is None:
-            return input_text
-
-        if guarded.result.guard_output["messages"]:
-            input_text = guarded.result.guard_output["messages"][-1]["content"]
-
-        return input_text
+        return guarded_content(guarded.result.guard_output, input_text)
