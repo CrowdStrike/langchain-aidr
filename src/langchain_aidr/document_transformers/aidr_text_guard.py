@@ -7,6 +7,8 @@ from crowdstrike_aidr import AIGuard
 from langchain_core.documents import BaseDocumentTransformer, Document
 from pydantic import SecretStr
 
+from langchain_aidr._utils import guarded_content
+
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
@@ -59,11 +61,7 @@ class CrowdStrikeGuardTransformer(BaseDocumentTransformer):
             if not guarded.result:
                 raise AssertionError(f"Guard operation failed for document: {document}")
 
-            guarded_content = (
-                guarded.result.guard_output["messages"][-1]["content"]
-                if guarded.result.guard_output
-                else document.page_content
-            )
-            guarded_documents.append(document.model_copy(update={"page_content": guarded_content}))
+            content = guarded_content(guarded.result.guard_output, document.page_content)
+            guarded_documents.append(document.model_copy(update={"page_content": content}))
 
         return guarded_documents
