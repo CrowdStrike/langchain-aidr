@@ -59,7 +59,8 @@ class CrowdStrikeGuardTransformer(BaseDocumentTransformer):
             )
 
             if not guarded.result:
-                raise AssertionError(f"Guard operation failed for document: {document}")
+                # Do not put the document in the message: errors end up in logs.
+                raise AssertionError("Guard operation failed for a document: the reply has no result")
 
             content = guarded_content(guarded.result.guard_output, document.page_content)
             guarded_documents.append(document.model_copy(update={"page_content": content}))
